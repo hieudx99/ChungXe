@@ -1,3 +1,5 @@
+
+drop database sqa;
 create database sqa;
 use sqa;
 
@@ -17,12 +19,22 @@ CREATE TABLE tblEmployee (
 	id int NOT NULL AUTO_INCREMENT, 
     fullname varchar(255) NOT NULL, 
     telephone varchar(255) NOT NULL UNIQUE, 
+    position varchar(255) NOT NULL,
     address varchar(255) NOT NULL, 
     salary int NOT NULL, 
     username varchar(255) NOT NULL UNIQUE, 
     password varchar(255) NOT NULL, 
     PRIMARY KEY (id));
     
+CREATE TABLE tblCarCategory (
+	id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL UNIQUE, 
+    PRIMARY KEY (id));
+    
+CREATE TABLE tblBranch (
+	id int NOT NULL AUTO_INCREMENT, 
+	name varchar(255) NOT NULL UNIQUE, 
+	PRIMARY KEY (id));
     
 CREATE TABLE tblCar (
 	id int NOT NULL AUTO_INCREMENT, 
@@ -43,13 +55,13 @@ CREATE TABLE tblCar (
     
 CREATE TABLE tblBill (
 	id int NOT NULL AUTO_INCREMENT, 
-    created_at date NOT NULL, 
+    createdAt date NOT NULL, 
     paymentStatus varchar(255) NOT NULL, 
     confirmStatus varchar(255) NOT NULL, 
     paymentMethod varchar(255) NOT NULL, 
     totalPrice float NOT NULL, 
-    start_date date NOT NULL, 
-    end_date date NOT NULL,
+    startDate date NOT NULL, 
+    endDate date NOT NULL,
     employeeId int NOT NULL, 
     carId int NOT NULL, 
     customerId int NOT NULL, 
@@ -59,21 +71,13 @@ CREATE TABLE tblBill (
     foreign key (customerId) references tblCustomer(id)
     );
     
-CREATE TABLE tblCarCategory (
-	id int NOT NULL AUTO_INCREMENT,
-    name varchar(255) NOT NULL UNIQUE, 
-    PRIMARY KEY (id));
-    
-CREATE TABLE tblBranch (
-	id int NOT NULL AUTO_INCREMENT, 
-	name varchar(255) NOT NULL UNIQUE, 
-	PRIMARY KEY (id));
+
 
 insert into tblCustomer(fullname, identityCard, telephone, address, username, password) values ('Do Xuan Hieu', '038012312313', '0976199402', 'Hoang Mai', 'hieudx1', '123456');
 insert into tblCustomer(fullname, identityCard, telephone, address, username, password) values ('Nguyen Bao Long', '0380456456456', '0972903455', 'Cau Giay', 'longnb', '123456');
 
-insert into tblEmployee(fullname, telephone, address, salary, username, password) values ('Vu Duc Duy', '0946836148', 'Hoang Mai', '10000', 'duyvd', '123456');
-insert into tblEmployee(fullname, telephone, address, salary, username, password) values ('Truong Quang Khai', '0913873134', 'Ha Dong', '20000', 'khaitq', '123456');
+insert into tblEmployee(fullname, telephone,position,  address, salary, username, password) values ('Vu Duc Duy', '0946836148', 'admin', 'Hoang Mai', '10000', 'duyvd', '123456');
+insert into tblEmployee(fullname, telephone, position, address, salary, username, password) values ('Truong Quang Khai', '0913873134', 'admin', 'Ha Dong', '20000', 'khaitq', '123456');
 
 insert into tblCarCategory(name) values ('A');
 insert into tblCarCategory(name) values ('B');
