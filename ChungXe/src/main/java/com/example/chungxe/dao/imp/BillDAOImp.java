@@ -3,6 +3,7 @@ package com.example.chungxe.dao.imp;
 
 import com.example.chungxe.dao.BillDAO;
 import com.example.chungxe.dao.DAO;
+import com.example.chungxe.model.Bill;
 import com.example.chungxe.model.dto.ShortBill;
 import org.springframework.stereotype.Service;
 
@@ -40,4 +41,45 @@ public class BillDAOImp extends DAO implements BillDAO {
         }
         return result;
     }
+
+    @Override
+    public Bill getBillById(int billId) {
+        Bill result = null;
+        String sql = "select * from tblBill where id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, billId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String createdAt = rs.getString("createdAt");
+                String paymentStatus = rs.getString("paymentStatus");
+                String confirmStatus = rs.getString("confirmStatus");
+                String paymentMethod = rs.getString("paymentMethod");
+                float totalPrice = rs.getFloat("totalPrice");
+                String startDate = rs.getString("startDate");
+                String endDate = rs.getString("endDate");
+                int employeeId = rs.getInt("employeeId");
+                int customerId = rs.getInt("customerId");
+                int carId = rs.getInt("carId");
+                result =  new Bill(
+                        billId,
+                        createdAt,
+                        paymentStatus,
+                        confirmStatus,
+                        paymentMethod,
+                        totalPrice,
+                        startDate,
+                        endDate,
+                        employeeId,
+                        carId,
+                        customerId
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
 }
