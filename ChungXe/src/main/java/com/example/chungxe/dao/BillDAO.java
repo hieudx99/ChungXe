@@ -1,9 +1,10 @@
 package com.example.chungxe.dao;
 
 import com.example.chungxe.model.Bill;
+import com.example.chungxe.model.dto.ShortBill;
 
 import java.util.List;
 
 public interface BillDAO {
-    public List<Bill> getBillsByCar(int carId, String startDate, String endDate);
+    public List<ShortBill> getBillsByCar(int carId, String startDate, String endDate);
 }

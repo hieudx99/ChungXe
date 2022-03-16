@@ -28,7 +28,8 @@ public class CarDAOImp extends DAO implements CarDAO {
                 "\tselect sum(totalPrice) as doanhthu, carId, createdAt from tblbill\n" +
                 "\twhere createdAt BETWEEN ? AND ?\n" +
                 ") as shortBill\n" +
-                "on tblcar.id = carId\n";
+                "on tblcar.id = carId\n" +
+                "order by shortBill.doanhthu DESC";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);

@@ -16,7 +16,7 @@ public class Bill {
     private float totalPrice;
     private String startDate;
     private String endDate;
-    private Employee employee;
-    private Car car;
-    private Customer customer;
+    private int employeeId;
+    private int carId;
+    private int customerId;
 }

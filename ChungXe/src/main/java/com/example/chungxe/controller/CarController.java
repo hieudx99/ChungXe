@@ -17,16 +17,6 @@ public class CarController {
     @Autowired
     CarDAO carDAO;
 
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    @Setter
-//    @Getter
-//    @Builder
-//    class DateQuery{
-//        String startDate;
-//        String endDate;
-//    }
-
     @GetMapping("/statistic")
     public List<Statistic> getStatisticByCar(@RequestParam String startDate, String endDate){
         return carDAO.getStatisticByCar(startDate, endDate);
