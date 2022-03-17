@@ -1,4 +1,4 @@
-package com.example.chungxe.model;
+package com.example.chungxe.model.dto;
 
 
 import lombok.Getter;
