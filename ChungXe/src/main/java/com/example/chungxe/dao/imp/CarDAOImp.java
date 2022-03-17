@@ -1,8 +1,14 @@
 package com.example.chungxe.dao.imp;
 
+import com.example.chungxe.dao.BranchDAO;
+import com.example.chungxe.dao.CarCategoryDAO;
 import com.example.chungxe.dao.CarDAO;
 import com.example.chungxe.dao.DAO;
+import com.example.chungxe.model.Branch;
+import com.example.chungxe.model.Car;
+import com.example.chungxe.model.CarCategory;
 import com.example.chungxe.model.Statistic;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.plaf.synth.SynthTextAreaUI;
@@ -17,6 +23,87 @@ public class CarDAOImp extends DAO implements CarDAO {
 
     public CarDAOImp(){
         super();
+    }
+
+    @Autowired
+    private CarCategoryDAO carCategoryDAO;
+    @Autowired
+    private BranchDAO branchDAO;
+
+    @Override
+    public List<Car> getListCar() {
+        List<Car> listCar = new ArrayList<>();
+        String sql = "SELECT * FROM tblCar";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String color = rs.getString("color");
+                String licensePlate = rs.getString("licensePlate");
+                int seatNumber = rs.getInt("seatNumber");
+                String image = rs.getString("image");
+                String status = rs.getString("status");
+                int categoryId = rs.getInt("categoryId");
+                int branchId = rs.getInt("branchId");
+                CarCategory carCategory = carCategoryDAO.getCarCategoryByID(categoryId);
+                Branch branch = branchDAO.getBranchByID(branchId);
+                Car car = Car.builder()
+                        .id(id)
+                        .name(name)
+                        .color(color)
+                        .licensePlate(licensePlate)
+                        .seatNumber(seatNumber)
+                        .image(image)
+                        .status(status)
+                        .carCategory(carCategory)
+                        .branch(branch)
+                        .build();
+                listCar.add(car);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCar;
+    }
+
+    @Override
+    public Car getCarByID(int carID) {
+        Car car = null;
+        String sql = "SELECT * FROM tblCar WHERE id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, carID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String color = rs.getString("color");
+                String licensePlate = rs.getString("licensePlate");
+                int seatNumber = rs.getInt("seatNumber");
+                String image = rs.getString("image");
+                String status = rs.getString("status");
+                int categoryId = rs.getInt("categoryId");
+                int branchId = rs.getInt("branchId");
+                CarCategory carCategory = carCategoryDAO.getCarCategoryByID(categoryId);
+                Branch branch = branchDAO.getBranchByID(branchId);
+                car = Car.builder()
+                        .id(id)
+                        .name(name)
+                        .color(color)
+                        .licensePlate(licensePlate)
+                        .seatNumber(seatNumber)
+                        .image(image)
+                        .status(status)
+                        .carCategory(carCategory)
+                        .branch(branch)
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return car;
     }
 
     @Override

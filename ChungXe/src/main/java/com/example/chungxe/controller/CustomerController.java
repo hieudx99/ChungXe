@@ -2,7 +2,7 @@ package com.example.chungxe.controller;
 
 
 import com.example.chungxe.dao.CustomerDAO;
-import com.example.chungxe.model.Credential;
+import com.example.chungxe.model.dto.Credential;
 import com.example.chungxe.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
