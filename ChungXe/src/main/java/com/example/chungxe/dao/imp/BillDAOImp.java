@@ -1,15 +1,21 @@
 package com.example.chungxe.dao.imp;
 
 
-import com.example.chungxe.dao.BillDAO;
-import com.example.chungxe.dao.DAO;
+import com.example.chungxe.dao.*;
 import com.example.chungxe.model.Bill;
+import com.example.chungxe.model.Car;
+import com.example.chungxe.model.Customer;
+import com.example.chungxe.model.Employee;
+import com.example.chungxe.model.dto.BillDTO;
 import com.example.chungxe.model.dto.ShortBill;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +25,13 @@ public class BillDAOImp extends DAO implements BillDAO {
     public BillDAOImp(){
         super();
     }
+
+    @Autowired
+    private EmployeeDAO employeeDAO;
+    @Autowired
+    private CustomerDAO customerDAO;
+    @Autowired
+    private CarDAO carDAO;
 
     @Override
     public List<ShortBill> getBillsByCar(int carId, String startDate, String endDate) {
@@ -61,25 +74,50 @@ public class BillDAOImp extends DAO implements BillDAO {
                 int employeeId = rs.getInt("employeeId");
                 int customerId = rs.getInt("customerId");
                 int carId = rs.getInt("carId");
-                result =  new Bill(
-                        billId,
-                        createdAt,
-                        paymentStatus,
-                        confirmStatus,
-                        paymentMethod,
-                        totalPrice,
-                        startDate,
-                        endDate,
-                        employeeId,
-                        carId,
-                        customerId
-                );
+                Employee employee = employeeDAO.getEmployeeByID(employeeId);
+                Customer customer = customerDAO.getCustomerByID(customerId);
+                Car car = carDAO.getCarByID(carId);
+                result =  new Bill(billId, createdAt, paymentStatus, confirmStatus, paymentMethod, totalPrice,
+                        startDate, endDate, employee, car, customer);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
 
+    }
+
+    @Override
+    public String createBill(BillDTO billDTO) {
+        String result = "";
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String createdAt = dtf.format(now);
+
+        String sql = "INSERT into tblBill(createdAt, paymentStatus, confirmStatus, paymentMethod, totalPrice, startDate, endDate, carId, customerId)" +
+                "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, createdAt);
+            ps.setString(2, billDTO.getPaymentStatus());
+            ps.setString(3, billDTO.getConfirmStatus());
+            ps.setString(4, billDTO.getPaymentMethod());
+            ps.setFloat(5, billDTO.getTotalPrice());
+            ps.setString(6, billDTO.getStartDate());
+            ps.setString(7, billDTO.getEndDate());
+            ps.setInt(8, billDTO.getCarId());
+            ps.setInt(9, billDTO.getCustomerId());
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                result = "success";
+            } else {
+                result = "fail";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

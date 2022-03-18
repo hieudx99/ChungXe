@@ -1,5 +1,8 @@
-package com.example.chungxe.model;
+package com.example.chungxe.model.dto;
 
+import com.example.chungxe.model.Car;
+import com.example.chungxe.model.Customer;
+import com.example.chungxe.model.Employee;
 import lombok.*;
 
 @AllArgsConstructor
@@ -7,7 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class Bill {
+public class BillDTO {
     private int id;
     private String createAt;
     private String paymentStatus;
@@ -16,7 +19,7 @@ public class Bill {
     private float totalPrice;
     private String startDate;
     private String endDate;
-    private Employee employee;
-    private Car car;
-    private Customer customer;
+    private int employeeId;
+    private int carId;
+    private int customerId;
 }

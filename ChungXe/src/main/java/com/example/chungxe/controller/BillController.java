@@ -2,12 +2,10 @@ package com.example.chungxe.controller;
 
 import com.example.chungxe.dao.BillDAO;
 import com.example.chungxe.model.Bill;
+import com.example.chungxe.model.dto.BillDTO;
 import com.example.chungxe.model.dto.ShortBill;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,4 +25,8 @@ public class BillController {
         return billDAO.getBillById(id);
     }
 
+    @PostMapping("/create_bill")
+    public String createBill(@RequestBody BillDTO billDTO) {
+        return billDAO.createBill(billDTO);
+    }
 }

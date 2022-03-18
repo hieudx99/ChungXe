@@ -47,4 +47,33 @@ public class CustomerDAOImp extends DAO implements CustomerDAO {
 
         return customer;
     }
+
+    @Override
+    public Customer getCustomerByID(int cusId) {
+        Customer customer = null;
+        String sql = "SELECT * FROM tblCustomer WHERE id = ?";
+        try {
+            PreparedStatement ps =con.prepareStatement(sql);
+            ps.setInt(1, cusId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String fullName = rs.getString("fullname");
+                String identityCard = rs.getString("identityCard");
+                String telephone = rs.getString("telephone");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                customer = Customer.builder()
+                        .id(cusId)
+                        .fullName(fullName)
+                        .identityCard(identityCard)
+                        .telephone(telephone)
+                        .address(address)
+                        .username(username)
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customer;
+    }
 }
