@@ -21,7 +21,7 @@ CREATE TABLE tblEmployee (
     telephone varchar(255) NOT NULL UNIQUE, 
     position varchar(255) NOT NULL,
     address varchar(255) NOT NULL, 
-    salary int NOT NULL, 
+    salary float NOT NULL, 
     username varchar(255) NOT NULL UNIQUE, 
     password varchar(255) NOT NULL, 
     PRIMARY KEY (id));
@@ -55,14 +55,14 @@ CREATE TABLE tblCar (
     
 CREATE TABLE tblBill (
 	id int NOT NULL AUTO_INCREMENT, 
-    createdAt date NOT NULL, 
+    createdAt datetime NOT NULL, 
     paymentStatus varchar(255) NOT NULL, 
     confirmStatus varchar(255) NOT NULL, 
     paymentMethod varchar(255) NOT NULL, 
     totalPrice float NOT NULL, 
     startDate date NOT NULL, 
     endDate date NOT NULL,
-    employeeId int NOT NULL, 
+    employeeId int, 
     carId int NOT NULL, 
     customerId int NOT NULL, 
     PRIMARY KEY (id),
