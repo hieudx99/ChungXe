@@ -12,6 +12,7 @@ public class Employee {
     private int id;
     private String fullName;
     private String telephone;
+    private String position;
     private String address;
     private float salary;
     private String username;
