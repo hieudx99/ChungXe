@@ -34,7 +34,7 @@ public class CarController {
     public List<Car> searchCar(@RequestParam(required = false) String kw, @RequestParam(required = false, defaultValue = "0") int nbrSeat,
                                @RequestParam(required = false, defaultValue = "0") int branchId,
                                @RequestParam(required = false, defaultValue = "0") int categoryId) {
-        return carDAO.searchCar(kw, nbrSeat, branchId, carCategoryId);
+        return carDAO.searchCar(kw, nbrSeat, branchId, categoryId);
     }
 
 }
