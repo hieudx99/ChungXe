@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BranchDAOImp extends DAO implements BranchDAO {
@@ -35,5 +37,27 @@ public class BranchDAOImp extends DAO implements BranchDAO {
             e.printStackTrace();
         }
         return branch;
+    }
+
+    @Override
+    public List<Branch> getListBranch() {
+        List<Branch> listBranch = new ArrayList<>();
+        String sql = "SELECT * FROM tblBranch";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                Branch branch = Branch.builder()
+                        .id(id)
+                        .name(name)
+                        .build();
+                listBranch.add(branch);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listBranch;
     }
 }
