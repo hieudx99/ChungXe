@@ -77,7 +77,6 @@ public class CarDAOImp extends DAO implements CarDAO {
             ps.setInt(1, carID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String color = rs.getString("color");
                 String licensePlate = rs.getString("licensePlate");
@@ -89,7 +88,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                 CarCategory carCategory = carCategoryDAO.getCarCategoryByID(categoryId);
                 Branch branch = branchDAO.getBranchByID(branchId);
                 car = Car.builder()
-                        .id(id)
+                        .id(carID)
                         .name(name)
                         .color(color)
                         .licensePlate(licensePlate)
@@ -104,6 +103,61 @@ public class CarDAOImp extends DAO implements CarDAO {
             e.printStackTrace();
         }
         return car;
+    }
+
+    @Override
+    public List<Car> searchCar(String kw, int nbrSeat, int branchId, int categoryId) {
+        List<Car> listCar = new ArrayList<>();
+        String sql = "SELECT * FROM tblCar c \n" +
+                "WHERE 1=1 \n";
+        if (kw != null && !kw.isEmpty()) {
+            sql += "AND c.name like ?";
+        }
+        if (nbrSeat > 0) {
+            sql += "AND c.seatNumber = " + nbrSeat + "\n";
+        }
+        if (branchId > 0) {
+            sql += "AND c.branchId = " + branchId + "\n";
+        }
+        if (categoryId > 0) {
+            sql += "AND c.categoryId = " + categoryId;
+        }
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            if (kw != null && !kw.isEmpty()) {
+                ps.setString(1, "%" + kw + "%");
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String color = rs.getString("color");
+                String licensePlate = rs.getString("licensePlate");
+                int seatNumber = rs.getInt("seatNumber");
+                String image = rs.getString("image");
+                String status = rs.getString("status");
+                int branch_id = rs.getInt("branchId");
+                int category_id = rs.getInt("categoryId");
+                CarCategory carCategory = carCategoryDAO.getCarCategoryByID(category_id);
+                Branch branch = branchDAO.getBranchByID(branch_id);
+                Car car = Car.builder()
+                        .id(id)
+                        .name(name)
+                        .color(color)
+                        .licensePlate(licensePlate)
+                        .seatNumber(seatNumber)
+                        .image(image)
+                        .status(status)
+                        .carCategory(carCategory)
+                        .branch(branch)
+                        .build();
+                listCar.add(car);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listCar;
     }
 
     @Override

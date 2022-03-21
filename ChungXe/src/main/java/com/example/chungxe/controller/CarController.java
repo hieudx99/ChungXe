@@ -3,7 +3,6 @@ package com.example.chungxe.controller;
 import com.example.chungxe.dao.CarDAO;
 import com.example.chungxe.model.Car;
 import com.example.chungxe.model.Statistic;
-import com.example.chungxe.model.dto.DateQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +28,13 @@ public class CarController {
     @GetMapping("/carid")
     public Car getCarByID(@RequestParam int carid) {
         return carDAO.getCarByID(carid);
+    }
+
+    @GetMapping("search")
+    public List<Car> searchCar(@RequestParam(required = false) String kw, @RequestParam(required = false, defaultValue = "0") int nbrSeat,
+                               @RequestParam(required = false, defaultValue = "0") int branchId,
+                               @RequestParam(required = false, defaultValue = "0") int categoryId) {
+        return carDAO.searchCar(kw, nbrSeat, branchId, carCategoryId);
     }
 
 }
