@@ -169,7 +169,7 @@ public class CarDAOImp extends DAO implements CarDAO {
     @Override
     public List<Integer> getListNbrSeat() {
         List<Integer> listNbrSeat = new ArrayList<>();
-        String sql = "SELECT DISTINCT seatNumber from tblcar";
+        String sql = "SELECT DISTINCT seatNumber from tblCar";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
