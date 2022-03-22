@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -88,8 +89,8 @@ public class BillDAOImp extends DAO implements BillDAO {
     }
 
     @Override
-    public String createBill(BillDTO billDTO) {
-        String result = "";
+    public Bill createBill(BillDTO billDTO) {
+        Bill bill = null;
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -98,7 +99,7 @@ public class BillDAOImp extends DAO implements BillDAO {
         String sql = "INSERT into tblBill(createdAt, paymentStatus, confirmStatus, paymentMethod, totalPrice, startDate, endDate, carId, customerId)" +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, createdAt);
             ps.setString(2, billDTO.getPaymentStatus());
             ps.setString(3, billDTO.getConfirmStatus());
@@ -110,14 +111,16 @@ public class BillDAOImp extends DAO implements BillDAO {
             ps.setInt(9, billDTO.getCustomerId());
             int res = ps.executeUpdate();
             if (res > 0) {
-                result = "success";
-            } else {
-                result = "fail";
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    bill = getBillById(id);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return bill;
     }
 
 }
