@@ -30,11 +30,16 @@ public class CarController {
         return carDAO.getCarByID(carid);
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public List<Car> searchCar(@RequestParam(required = false) String kw, @RequestParam(required = false, defaultValue = "0") int nbrSeat,
                                @RequestParam(required = false, defaultValue = "0") int branchId,
                                @RequestParam(required = false, defaultValue = "0") int categoryId) {
         return carDAO.searchCar(kw, nbrSeat, branchId, categoryId);
+    }
+
+    @GetMapping("/getListSeat")
+    public List<Integer> getListNbrSeat() {
+        return carDAO.getListNbrSeat();
     }
 
 }
