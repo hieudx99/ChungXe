@@ -42,4 +42,31 @@ public class EmployeeDAOImp extends DAO implements EmployeeDAO {
         }
         return employee;
     }
+
+    @Override
+    public Employee checkLogin(String username, String password) {
+        Employee em = null;
+        String sql = "SELECT * FROM tblemployee WHERE username = ? and password = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String fullName = rs.getString("fullname");
+                String position = rs.getString("position");
+                String telephone = rs.getString("telephone");
+                String address = rs.getString("address");
+                float salary = rs.getFloat("salary");
+                em = new Employee(id, fullName, telephone, position, address, salary,  username, password);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return em;
+
+    }
 }

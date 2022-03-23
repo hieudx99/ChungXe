@@ -11,6 +11,7 @@ import com.example.chungxe.model.dto.ShortBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,8 +37,10 @@ public class BillDAOImp extends DAO implements BillDAO {
     @Override
     public List<ShortBill> getBillsByCar(int carId, String startDate, String endDate) {
         List<ShortBill> result = new ArrayList<>();
-        String sql = "select id, carId, createdAt  from tblbill\n" +
-                "where carId = ? and createdAt between ? and ?";
+        String sql = "select tblbill.id as id, tblcar.name as carName, createdAt, carId from tblbill\n" +
+                "inner join tblcar\n" +
+                "on tblbill.carId = tblcar.id\n" +
+                "where carId = ? and confirmStatus = \"Confirmed\" and createdAt BETWEEN ? and ?;";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, carId);
@@ -47,7 +50,8 @@ public class BillDAOImp extends DAO implements BillDAO {
             while (rs.next()){
                 int id = rs.getInt("id");
                 String createdAt = rs.getString("createdAt");
-                result.add(new ShortBill(id, carId, createdAt));
+                String carName = rs.getString("carName");
+                result.add(new ShortBill(id, carId, carName,  createdAt));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,6 +122,53 @@ public class BillDAOImp extends DAO implements BillDAO {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public List<Bill> getNotConfirmedBills()  {
+        List<Bill> result = new ArrayList<>();
+        String sql = "select * from tblbill \n" +
+                "where confirmStatus = \"Pending\"";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                int billId = rs.getInt("id");
+                String createdAt = rs.getString("createdAt");
+                String paymentStatus = rs.getString("paymentStatus");
+                String confirmStatus = rs.getString("confirmStatus");
+                String paymentMethod = rs.getString("paymentMethod");
+                float totalPrice = rs.getFloat("totalPrice");
+                String startDate = rs.getString("startDate");
+                String endDate = rs.getString("endDate");
+                int employeeId = rs.getInt("employeeId");
+                int customerId = rs.getInt("customerId");
+                int carId = rs.getInt("carId");
+                Employee employee = employeeDAO.getEmployeeByID(employeeId);
+                Customer customer = customerDAO.getCustomerByID(customerId);
+                Car car = carDAO.getCarByID(carId);
+                result.add(  new Bill(billId, createdAt, paymentStatus, confirmStatus, paymentMethod, totalPrice,
+                        startDate, endDate, employee, car, customer));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public void confirmBill(int billId, String status) {
+        String sql = "update tblbill\n" +
+                "set confirmStatus=?\n" +
+                "where id = ?;\n";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setInt(2, billId);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

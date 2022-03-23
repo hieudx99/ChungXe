@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class ShortBill {
-    private int id, carId;
-    private String carName, createAt;
+public class Confirm {
+    private int id;
+    private String status;
 }
