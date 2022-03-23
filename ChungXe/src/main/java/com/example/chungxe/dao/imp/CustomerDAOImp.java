@@ -41,6 +41,10 @@ public class CustomerDAOImp extends DAO implements CustomerDAO {
                         .username(username)
                         .build();
             }
+            else {
+                customer = new Customer();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

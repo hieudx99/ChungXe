@@ -13,6 +13,7 @@ public class Car {
     private String color;
     private String licensePlate;
     private int seatNumber;
+    private float price;
     private String image;
     private String status;
     private CarCategory carCategory;

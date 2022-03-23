@@ -43,6 +43,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                 String color = rs.getString("color");
                 String licensePlate = rs.getString("licensePlate");
                 int seatNumber = rs.getInt("seatNumber");
+                float price = rs.getFloat("price");
                 String image = rs.getString("image");
                 String status = rs.getString("status");
                 int categoryId = rs.getInt("categoryId");
@@ -55,6 +56,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                         .color(color)
                         .licensePlate(licensePlate)
                         .seatNumber(seatNumber)
+                        .price(price)
                         .image(image)
                         .status(status)
                         .carCategory(carCategory)
@@ -81,6 +83,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                 String color = rs.getString("color");
                 String licensePlate = rs.getString("licensePlate");
                 int seatNumber = rs.getInt("seatNumber");
+                float price = rs.getFloat("price");
                 String image = rs.getString("image");
                 String status = rs.getString("status");
                 int categoryId = rs.getInt("categoryId");
@@ -93,6 +96,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                         .color(color)
                         .licensePlate(licensePlate)
                         .seatNumber(seatNumber)
+                        .price(price)
                         .image(image)
                         .status(status)
                         .carCategory(carCategory)
@@ -134,6 +138,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                 String color = rs.getString("color");
                 String licensePlate = rs.getString("licensePlate");
                 int seatNumber = rs.getInt("seatNumber");
+                float price = rs.getFloat("price");
                 String image = rs.getString("image");
                 String status = rs.getString("status");
                 int branch_id = rs.getInt("branchId");
@@ -146,6 +151,7 @@ public class CarDAOImp extends DAO implements CarDAO {
                         .color(color)
                         .licensePlate(licensePlate)
                         .seatNumber(seatNumber)
+                        .price(price)
                         .image(image)
                         .status(status)
                         .carCategory(carCategory)
@@ -158,6 +164,23 @@ public class CarDAOImp extends DAO implements CarDAO {
         }
 
         return listCar;
+    }
+
+    @Override
+    public List<Integer> getListNbrSeat() {
+        List<Integer> listNbrSeat = new ArrayList<>();
+        String sql = "SELECT DISTINCT seatNumber from tblCar";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int nbr_of_seat = rs.getInt("seatNumber");
+                listNbrSeat.add(nbr_of_seat);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listNbrSeat;
     }
 
     @Override

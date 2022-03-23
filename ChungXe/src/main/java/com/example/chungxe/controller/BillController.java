@@ -27,7 +27,7 @@ public class BillController {
     }
 
     @PostMapping("/create_bill")
-    public String createBill(@RequestBody BillDTO billDTO) {
+    public Bill createBill(@RequestBody BillDTO billDTO) {
         return billDAO.createBill(billDTO);
     }
 
