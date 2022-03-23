@@ -6,6 +6,6 @@ import com.example.chungxe.model.CarCategory;
 import java.util.List;
 
 public interface BranchDAO {
-    public Branch getBranchByID(int branchID);
-    public List<Branch> getListBranch();
+    Branch getBranchByID(int branchID);
+    List<Branch> getListBranch();
 }

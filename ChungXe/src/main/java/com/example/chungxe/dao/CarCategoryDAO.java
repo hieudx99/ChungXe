@@ -5,6 +5,6 @@ import com.example.chungxe.model.CarCategory;
 import java.util.List;
 
 public interface CarCategoryDAO {
-    public CarCategory getCarCategoryByID(int carCategoryID);
-    public List<CarCategory> getListCategory();
+    CarCategory getCarCategoryByID(int carCategoryID);
+    List<CarCategory> getListCategory();
 }

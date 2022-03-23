@@ -7,12 +7,12 @@ import com.example.chungxe.model.dto.ShortBill;
 import java.util.List;
 
 public interface BillDAO {
-    public List<ShortBill> getBillsByCar(int carId, String startDate, String endDate);
-    public Bill getBillById(int billId);
+    List<ShortBill> getBillsByCar(int carId, String startDate, String endDate);
+    Bill getBillById(int billId);
 
-    public List<Bill> getNotConfirmedBills();
-    public void confirmBill(int billId, String status);
+    List<Bill> getNotConfirmedBills();
+    void confirmBill(int billId, String status);
 
-    public Bill createBill(BillDTO billDTO);
+    Bill createBill(BillDTO billDTO);
 
 }
