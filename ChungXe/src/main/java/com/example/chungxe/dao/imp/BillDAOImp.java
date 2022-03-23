@@ -130,8 +130,8 @@ public class BillDAOImp extends DAO implements BillDAO {
     @Override
     public List<Bill> getNotConfirmedBills()  {
         List<Bill> result = new ArrayList<>();
-        String sql = "select * from tblbill \n" +
-                "where confirmStatus = \"Pending\"";
+        String sql = "select * from tblbill\n" +
+                "where confirmStatus=\"pending\"";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
