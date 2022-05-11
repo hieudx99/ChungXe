@@ -191,7 +191,7 @@ public class CarDAOImp extends DAO implements CarDAO {
         List<Statistic> result = new ArrayList<>();
         String sql = "select tblcar.id, shortBill.doanhthu, tblcar.name from tblcar\n" +
                 "inner join (select sum(totalPrice) as doanhthu, carId, createdAt from tblbill\n" +
-                "where  createdAt BETWEEN ? AND ?\n" +
+                "where  confirmStatus = 'Confirmed' AND createdAt BETWEEN ? AND ?\n" +
                 "group by carId)as shortBill\n" +
                 "on tblcar.id = carId\n" +
                 "order by shortBill.doanhthu DESC";
