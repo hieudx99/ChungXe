@@ -189,12 +189,10 @@ public class CarDAOImp extends DAO implements CarDAO {
     @Override
     public List<Statistic> getStatisticByCar(String startDate, String endDate) {
         List<Statistic> result = new ArrayList<>();
-        String sql = "select tblcar.id, shortBill.doanhthu, tblcar.name \n" +
-                "from tblcar\n" +
-                "inner join (\n" +
-                "\tselect sum(totalPrice) as doanhthu, carId, createdAt from tblbill\n" +
-                "\twhere createdAt BETWEEN ? AND ?\n" +
-                ") as shortBill\n" +
+        String sql = "select tblcar.id, shortBill.doanhthu, tblcar.name from tblcar\n" +
+                "inner join (select sum(totalPrice) as doanhthu, carId, createdAt from tblbill\n" +
+                "where  createdAt BETWEEN ? AND ?\n" +
+                "group by carId)as shortBill\n" +
                 "on tblcar.id = carId\n" +
                 "order by shortBill.doanhthu DESC";
 

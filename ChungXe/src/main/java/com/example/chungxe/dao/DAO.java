@@ -12,7 +12,7 @@ public class DAO {
             String dbClass = "com.mysql.cj.jdbc.Driver";
             try {
                 Class.forName(dbClass);
-                con = DriverManager.getConnection(dbUrl, "root", "b18dcdt073");
+                con = DriverManager.getConnection(dbUrl, "root", "Khai15102@");
             } catch (Exception e) {
                 e.printStackTrace();
             }
