@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
 
@@ -52,7 +53,8 @@ class EmployeeDAOImpTest {
     void checkLogin() {
         String username = "duyvd";
         String password = "123456";
-        Employee employee = employeeDAO.checkLogin(username, password);
+        ResponseEntity<Employee> response = employeeDAO.checkLogin(username, password);
+        Employee employee = response.getBody();
         assertNotNull(employee);
         assertEquals(employee.getTelephone(), "0946836148");
         assertEquals(employee.getId() , 1);
@@ -67,7 +69,8 @@ class EmployeeDAOImpTest {
     void givenInvalidPassword_whenCheckLogin_thenLoginFail() {
         String username = "duyvd";
         String password = "1234567";
-        Employee employee = employeeDAO.checkLogin(username, password);
+        ResponseEntity<Employee> response = employeeDAO.checkLogin(username, password);
+        Employee employee = response.getBody();
         assertNull(employee);
 
     }
@@ -76,14 +79,18 @@ class EmployeeDAOImpTest {
     void givenInvalidUsername_whenCheckLogin_thenLoginFail() {
         String username = "duyvd1";
         String password = "123456";
-        Employee employee = employeeDAO.checkLogin(username, password);
+        ResponseEntity<Employee> response = employeeDAO.checkLogin(username, password);
+        Employee employee = response.getBody();
         assertNull(employee);
     }
+
     @Test
     void givenEmptyUsernameAndPassword_whenCheckLogin_thenLoginFail() {
         String username = "";
         String password = "";
-        Employee employee = employeeDAO.checkLogin(username, password);
+        ResponseEntity<Employee> response = employeeDAO.checkLogin(username, password);
+        Employee employee = response.getBody();
+        assertEquals(response.getStatusCode().value(), 404);
         assertNull(employee);
     }
 

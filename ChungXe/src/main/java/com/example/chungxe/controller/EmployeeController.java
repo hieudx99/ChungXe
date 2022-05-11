@@ -5,6 +5,7 @@ import com.example.chungxe.model.Customer;
 import com.example.chungxe.model.Employee;
 import com.example.chungxe.model.dto.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class EmployeeController {
     EmployeeDAO employeeDAO;
 
     @PostMapping("/login")
-    public Employee checkLogin(@RequestBody Credential credential) {
+    public ResponseEntity<Employee> checkLogin(@RequestBody Credential credential) {
         return employeeDAO.checkLogin(credential.getUsername(), credential.getPassword());
     }
 }

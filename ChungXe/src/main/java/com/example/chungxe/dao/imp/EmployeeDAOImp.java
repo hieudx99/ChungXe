@@ -3,6 +3,8 @@ package com.example.chungxe.dao.imp;
 import com.example.chungxe.dao.DAO;
 import com.example.chungxe.dao.EmployeeDAO;
 import com.example.chungxe.model.Employee;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
@@ -47,7 +49,7 @@ public class EmployeeDAOImp extends DAO implements EmployeeDAO {
     }
 
     @Override
-    public Employee checkLogin(String username, String password) {
+    public ResponseEntity<Employee> checkLogin(String username, String password) {
         Employee em = null;
         String sql = "SELECT * FROM tblemployee WHERE username = ? and password = ?";
         PreparedStatement ps = null;
@@ -56,7 +58,7 @@ public class EmployeeDAOImp extends DAO implements EmployeeDAO {
             ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            if (rs.next()){
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullname");
                 String position = rs.getString("position");
@@ -64,12 +66,14 @@ public class EmployeeDAOImp extends DAO implements EmployeeDAO {
                 String address = rs.getString("address");
                 float salary = rs.getFloat("salary");
                 em = new Employee(id, fullName, telephone, position, address, salary,  username, password);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return em;
+        return ResponseEntity.ok().body(em);
 
     }
 }
