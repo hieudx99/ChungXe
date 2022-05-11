@@ -37,6 +37,9 @@ public class EmployeeDAOImp extends DAO implements EmployeeDAO {
                         .username(username)
                         .build();
             }
+            else {
+                throw new SQLException("Invalid Employee ID");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

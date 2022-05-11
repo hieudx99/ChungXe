@@ -32,6 +32,9 @@ public class CarCategoryImp extends DAO implements CarCategoryDAO {
                 String name = rs.getString("name");
                 carCategory = new CarCategory(id, name);
             }
+            else {
+                throw new SQLException("Category not exist!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

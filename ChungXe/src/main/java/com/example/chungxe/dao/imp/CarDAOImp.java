@@ -103,6 +103,9 @@ public class CarDAOImp extends DAO implements CarDAO {
                         .branch(branch)
                         .build();
             }
+            else {
+                throw new SQLException("Car not exist");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

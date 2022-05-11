@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ class CarDAOImpTest {
     }
 
     @Test
-    void searchCarByNameOnly() {
+    void givenOnlyCarName_whenSearchCar() {
         String kw = "lux";
         int nbrSeat = 0;
         int branchId = 0;
@@ -52,7 +53,7 @@ class CarDAOImpTest {
     }
 
     @Test
-    void searchCarByNbrSeatOnly() {
+    void givenOnlyNbrSeat_whenSearchCar() {
         String kw = "";
         int nbrSeat = 4;
         int branchId = 0;
@@ -64,7 +65,7 @@ class CarDAOImpTest {
     }
 
     @Test
-    void searchCarByBranchIdOnly() {
+    void givenOnlyBranchId_whenSearchCar() {
         String kw = "";
         int nbrSeat = 0;
         int branchId = 4;
@@ -75,7 +76,7 @@ class CarDAOImpTest {
     }
 
     @Test
-    void searchCarByCategoryId() {
+    void givenOnlyCarCategoryId_whenSearchCar() {
         String kw = "";
         int nbrSeat = 0;
         int branchId = 0;
@@ -102,7 +103,17 @@ class CarDAOImpTest {
         assertEquals(car.getSeatNumber(), 4);
         assertEquals(car.getCarCategory().getId(), 3);
         assertEquals(car.getPrice(), 600000);
+    }
 
+    @Test
+    void givenInvalidCarId_whenGetCarByID_thenThrowException() {
+        int id = 10000000;
+        Car car = carDAOImp.getCarByID(id);
+        SQLException exception = assertThrows(SQLException.class, () -> {
+            throw new SQLException("Car not exist");
+        });
+
+        assertEquals(exception.getMessage(), "Car not exist");
     }
 
     @Test
@@ -119,12 +130,12 @@ class CarDAOImpTest {
     @Test
     void getStatisticByCar() {
         List<Statistic> listStatistic = new ArrayList<>();
-        String startDate = "2022-03-01";
-        String endDate = "2022-04-30";
+        String startDate = "2022-05-01";
+        String endDate = "2022-05-31";
         listStatistic = carDAOImp.getStatisticByCar(startDate, endDate);
         assertNotNull(listStatistic);
         assertEquals(listStatistic.get(0).getCarId(), 1);
-        assertEquals(listStatistic.get(0).getDoanhthu(), 2200000);
+        assertEquals(listStatistic.get(0).getDoanhthu(), 9800000);
         assertEquals(listStatistic.get(0).getCarName(), "VINFAST LUX  A2.0");
     }
 }

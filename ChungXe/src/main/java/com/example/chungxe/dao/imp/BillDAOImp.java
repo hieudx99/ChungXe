@@ -103,6 +103,7 @@ public class BillDAOImp extends DAO implements BillDAO {
         String sql = "INSERT into tblBill(createdAt, paymentStatus, confirmStatus, paymentMethod, totalPrice, startDate, endDate, carId, customerId)" +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
+//            con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, createdAt);
             ps.setString(2, billDTO.getPaymentStatus());
@@ -121,8 +122,20 @@ public class BillDAOImp extends DAO implements BillDAO {
                     bill = getBillById(id);
                 }
             }
+//            con.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+//            try {
+//                con.rollback();
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
+        } finally {
+//            try {
+//                con.setAutoCommit(true);
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
         }
         return bill;
     }
@@ -173,5 +186,4 @@ public class BillDAOImp extends DAO implements BillDAO {
             e.printStackTrace();
         }
     }
-
 }

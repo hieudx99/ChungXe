@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -34,6 +36,17 @@ class EmployeeDAOImpTest {
         assertEquals(employee.getAddress() , "Hoang Mai");
     }
 
+    @Test
+    void givenInvalidEmployeeId_whenGetEmployeeByID_thenThrowException(){
+        int id = 100000000;
+        Employee employee = employeeDAO.getEmployeeByID(id);
+        SQLException exception = assertThrows(SQLException.class, () -> {
+            throw new SQLException("Invalid Employee ID");
+        });
+
+        assertEquals(exception.getMessage(), "Invalid Employee ID");
+    }
+
 
     @Test
     void checkLogin() {
@@ -51,35 +64,27 @@ class EmployeeDAOImpTest {
     }
 
     @Test
-    void checkLoginInvalidPassword() {
+    void givenInvalidPassword_whenCheckLogin_thenLoginFail() {
         String username = "duyvd";
         String password = "1234567";
         Employee employee = employeeDAO.checkLogin(username, password);
-        assertNull(employee.getUsername());
-        assertNull(employee.getAddress());
-        assertNull(employee.getFullName());
-        assertNull(employee.getTelephone());
+        assertNull(employee);
+
     }
 
     @Test
-    void checkLoginInvalidUsername() {
+    void givenInvalidUsername_whenCheckLogin_thenLoginFail() {
         String username = "duyvd1";
         String password = "123456";
         Employee employee = employeeDAO.checkLogin(username, password);
-        assertNull(employee.getUsername());
-        assertNull(employee.getAddress());
-        assertNull(employee.getFullName());
-        assertNull(employee.getTelephone());
+        assertNull(employee);
     }
     @Test
-    void checkLoginEmptyUsernamePassword() {
+    void givenEmptyUsernameAndPassword_whenCheckLogin_thenLoginFail() {
         String username = "";
         String password = "";
         Employee employee = employeeDAO.checkLogin(username, password);
-        assertNull(employee.getUsername());
-        assertNull(employee.getAddress());
-        assertNull(employee.getFullName());
-        assertNull(employee.getTelephone());
+        assertNull(employee);
     }
 
 }

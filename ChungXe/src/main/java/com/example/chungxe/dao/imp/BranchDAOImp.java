@@ -33,6 +33,9 @@ public class BranchDAOImp extends DAO implements BranchDAO {
                 String name = rs.getString("name");
                 branch = new Branch(id, name);
             }
+            else {
+                throw new SQLException ("Branch not exist!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -11,5 +11,4 @@ public interface CarDAO {
     List<Car> searchCar(String kw, int nbrSeat, int branchId, int categoryId);
     List<Integer> getListNbrSeat();
     List<Statistic> getStatisticByCar(String startDate, String endDate);
-
 }
