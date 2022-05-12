@@ -71,6 +71,7 @@ class EmployeeDAOImpTest {
         String password = "1234567";
         ResponseEntity<Employee> response = employeeDAO.checkLogin(username, password);
         Employee employee = response.getBody();
+        assertEquals(response.getStatusCode().value(), 404);
         assertNull(employee);
 
     }
@@ -81,6 +82,7 @@ class EmployeeDAOImpTest {
         String password = "123456";
         ResponseEntity<Employee> response = employeeDAO.checkLogin(username, password);
         Employee employee = response.getBody();
+        assertEquals(response.getStatusCode().value(), 404);
         assertNull(employee);
     }
 
