@@ -1,14 +1,11 @@
 package com.example.chungxe.dao;
 
-import com.example.chungxe.model.Car;
-import com.example.chungxe.model.Statistic;
+import com.example.chungxe.model.RevenueStatistic;
 
-import java.util.List;
+
+import java.util.ArrayList;
+
 
 public interface CarDAO {
-    List<Car> getListCar();
-    Car getCarByID(int carID);
-    List<Car> searchCar(String kw, int nbrSeat, int branchId, int categoryId);
-    List<Integer> getListNbrSeat();
-    List<Statistic> getStatisticByCar(String startDate, String endDate);
+    ArrayList<RevenueStatistic> getStatisticByCar(String startDateFilter, String endDateFilter);
 }

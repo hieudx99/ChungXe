@@ -8,7 +8,7 @@ public class DAO {
 
     public DAO() {
         if (con == null) {
-            String dbUrl = "jdbc:mysql://127.0.0.1:3306/sqa?allowPublicKeyRetrieval=true&useSSL=false";
+            String dbUrl = "jdbc:mysql://127.0.0.1:3306/thuexe?allowPublicKeyRetrieval=true&useSSL=false";
             String dbClass = "com.mysql.cj.jdbc.Driver";
             try {
                 Class.forName(dbClass);

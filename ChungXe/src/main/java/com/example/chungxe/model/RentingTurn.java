@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class CarCategory {
-    private int id;
-    private String name;
+public class RentingTurn {
+    private String carName, licensePlates, startDate, endDate;
+    private float totalPrice;
 }

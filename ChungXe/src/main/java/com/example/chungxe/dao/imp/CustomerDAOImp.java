@@ -3,11 +3,14 @@ package com.example.chungxe.dao.imp;
 import com.example.chungxe.dao.CustomerDAO;
 import com.example.chungxe.dao.DAO;
 import com.example.chungxe.model.Customer;
+import com.example.chungxe.model.RentingTurn;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @Service
 public class CustomerDAOImp extends DAO implements CustomerDAO {
@@ -16,68 +19,93 @@ public class CustomerDAOImp extends DAO implements CustomerDAO {
         super();
     }
 
+
+    @SneakyThrows
     @Override
-    public Customer checkLogin(String username, String password) {
-        Customer customer = null;
-        String sql = "SELECT * FROM tblCustomer WHERE username = ? AND password = ?";
-
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String fullName = rs.getString("fullname");
-                String identityCard = rs.getString("identityCard");
-                String telephone = rs.getString("telephone");
-                String address = rs.getString("address");
-                customer = Customer.builder()
-                        .id(id)
-                        .fullName(fullName)
-                        .identityCard(identityCard)
-                        .telephone(telephone)
-                        .address(address)
-                        .username(username)
-                        .build();
-            }
-            else {
-                customer = new Customer();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public ArrayList<Customer> getCustomerList() {
+        ArrayList<Customer> customerList = new ArrayList<>();
+        String sql = "SELECT * FROM customer";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            int id = rs.getInt("id");
+            String fullName = rs.getString("fullName");
+            String phoneNumber = rs.getString("phoneNumber");
+            String address = rs.getString("address");
+            String username = rs.getString("username");
+            String password = rs.getString("password");
+            customerList.add(new Customer(
+                    id,
+                    fullName,
+                    phoneNumber,
+                    address,
+                    username,
+                    password
+            ));
         }
 
-        return customer;
+        System.out.println("customers: " + customerList.size());
+        return customerList;
     }
 
     @Override
-    public Customer getCustomerByID(int cusId) {
+    public Customer getCustomerByName(String name) {
         Customer customer = null;
-        String sql = "SELECT * FROM tblCustomer WHERE id = ?";
+        String sql = "SELECT * FROM customer WHERE fullName = ?";
         try {
             PreparedStatement ps =con.prepareStatement(sql);
-            ps.setInt(1, cusId);
+            ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                String fullName = rs.getString("fullname");
-                String identityCard = rs.getString("identityCard");
-                String telephone = rs.getString("telephone");
+                int id = rs.getInt("id");
+                String fullName = rs.getString("fullName");
+                String telephone = rs.getString("phoneNumber");
                 String address = rs.getString("address");
                 String username = rs.getString("username");
+                String password = rs.getString("password");
                 customer = Customer.builder()
-                        .id(cusId)
+                        .id(id)
                         .fullName(fullName)
-                        .identityCard(identityCard)
-                        .telephone(telephone)
+                        .phoneNumber(telephone)
                         .address(address)
                         .username(username)
+                        .password(password)
                         .build();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return customer;
+    }
+
+    @SneakyThrows
+    @Override
+    public ArrayList<RentingTurn> getRentingTurnByCustomerName(String fullName) {
+        ArrayList<RentingTurn> result = new ArrayList<>();
+        String sql = "select name as carName, licensePlates, startDate, endDate, totalPrice from \n" +
+                "((booking inner join customer on booking.customerId = customer.id)\n" +
+                "inner join car on car.id = carId)\n" +
+                "where fullName = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, fullName);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()){
+            String carName = rs.getString("carName");
+            String licensePlates = rs.getString("licensePlates");
+            String startDate = rs.getString("startDate");
+            String endDate = rs.getString("endDate");
+            float totalPrice = rs.getFloat("totalPrice");
+
+            result.add(new RentingTurn(
+                    carName,
+                    licensePlates,
+                    startDate,
+                    endDate,
+                    totalPrice
+            ));
+        }
+
+        return result;
     }
 }

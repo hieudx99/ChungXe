@@ -11,8 +11,7 @@ import lombok.*;
 public class Customer {
     private int id;
     private String fullName;
-    private String identityCard;
-    private String telephone;
+    private String phoneNumber;
     private String address;
     private String username;
     private String password;
